@@ -285,7 +285,7 @@ public class ExportCSVFileRuleProvider extends AbstractRuleProvider
             {
                 String[] headerLine;
                 headerLine = new String[]{"Rule Id", "Issue Category", "Title", "Description", "Links", "Application", "File Name",
-                        "File Path", "Line", "Story points"};
+                        "File Path", "Line", "Story points", "Parent Application"};
                 String filename = PathUtil.cleanFileName(projectModel.getRootFileModel().getFileName()) + ".csv";
                 CSVWriter writer = initCSVWriter(outputFolderPath + filename, headerLine);
                 projectToFile.put(projectModel.getName(), writer);
@@ -300,11 +300,15 @@ public class ExportCSVFileRuleProvider extends AbstractRuleProvider
                 CSVWriter appFileTechWriter = initCSVWriter(outputFolderPath + appFileTechFilename, headerLine);
                 projectToFile.put(APP_FILE_TECH_CSV_FILENAME, appFileTechWriter);
             }
-            if (isLineForAppTagFile)
-            {
-                projectToFile.get(APP_FILE_TECH_CSV_FILENAME).writeNext(line);
-            }
-            else
+            /**
+             * Mark Soelman
+             * Always add the parent application, not just with AllIssues
+             */
+//            if (isLineForAppTagFile)
+//            {
+//                projectToFile.get(APP_FILE_TECH_CSV_FILENAME).writeNext(line);
+//            }
+//            else
             {
                 projectToFile.get(projectModel.getName()).writeNext(line);
                 //Convert line array to ArrayList, add extra field for merged file on the end,

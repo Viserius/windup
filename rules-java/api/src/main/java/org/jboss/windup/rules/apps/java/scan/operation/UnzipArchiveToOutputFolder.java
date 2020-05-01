@@ -112,20 +112,28 @@ public class UnzipArchiveToOutputFolder extends AbstractIterationOperation<Archi
             throw new IllegalStateException("Archive model doesn't have an archiveName: " + archiveModel.getFilePath());
 
         final Path appArchiveFolder = getNonexistentDirForAppArchive(tempFolder, appArchiveName);
+
+        /**
+         * Mark Soelman
+         * Do not unzip the same file multiple times!
+         */
+        if(Files.exists(appArchiveFolder)) {
+            archiveModel.setUnzippedDirectory(appArchiveFolder.toString());
+            recurseAndAddFiles(event, context, tempFolder, fileService, archiveModel, archiveModel, subArchivesOnly);
+            return;
+        }
+
         ensureDirIsCreated(appArchiveFolder);
 
         // Unzip to the temp folder.
         LOG.info("Unzipping " + inputZipFile.getPath() + " to " + appArchiveFolder.toString());
-        try
-        {
+        try {
             ZipUtil.unzipToFolder(inputZipFile, appArchiveFolder.toFile());
-        }
-        catch (Throwable e)
-        {
+        } catch (Throwable e) {
             // only mark the canonical archive, as we only need to add this classification once
             ArchiveModel canonicalArchive = archiveModel;
             if (canonicalArchive instanceof DuplicateArchiveModel)
-                canonicalArchive = ((DuplicateArchiveModel)canonicalArchive).getCanonicalArchive();
+                canonicalArchive = ((DuplicateArchiveModel) canonicalArchive).getCanonicalArchive();
 
             ClassificationService classificationService = new ClassificationService(event.getGraphContext());
 
@@ -138,7 +146,7 @@ public class UnzipArchiveToOutputFolder extends AbstractIterationOperation<Archi
                     MALFORMED_ARCHIVE, "Cannot unzip these file(s): \n\n" + badArchivesString);
             archiveModel.setParseError("Cannot unzip the file: " + e.getMessage());
             LOG.warning("Cannot unzip the file " + inputZipFile.getPath() + " to " + appArchiveFolder.toString()
-                        + ". The ArchiveModel was classified as malformed.");
+                    + ". The ArchiveModel was classified as malformed.");
             return;
         }
 
@@ -221,13 +229,17 @@ public class UnzipArchiveToOutputFolder extends AbstractIterationOperation<Archi
                     }
                 }
 
+                /**
+                 * Mark Soelman
+                 * Duplicate archives will be processed multiple times now!
+                 */
                 if (canonicalArchiveModel != null)
                 {
-                    // handle as duplicate
+//                     handle as duplicate
                     DuplicateArchiveModel duplicateArchive = GraphService.addTypeToModel(event.getGraphContext(), newArchiveModel, DuplicateArchiveModel.class);
                     duplicateArchive.setCanonicalArchive(canonicalArchiveModel);
 
-                    // create dupes for child archives
+//                     create dupes for child archives
                     unzipToTempDirectory(event, context, tempFolder, newZipFile, duplicateArchive, true);
                 } else
                 {
@@ -240,17 +252,25 @@ public class UnzipArchiveToOutputFolder extends AbstractIterationOperation<Archi
         }
     }
 
+    /**
+     * Mark Soelman
+     * Do not unzip the same file multiple times!
+     *
+     * @param tempFolder
+     * @param appArchiveName
+     * @return
+     */
     private static Path getNonexistentDirForAppArchive(Path tempFolder, String appArchiveName)
     {
         Path appArchiveFolder = Paths.get(tempFolder.toString(), appArchiveName);
 
-        int fileIdx = 1;
-        // If it is already created, try another folder name.
-        while (Files.exists(appArchiveFolder))
-        {
-            appArchiveFolder = Paths.get(tempFolder.toString(), appArchiveName + "." + fileIdx);
-            fileIdx++;
-        }
+//        int fileIdx = 1;
+//        // If it is already created, try another folder name.
+//        while (Files.exists(appArchiveFolder))
+//        {
+//            appArchiveFolder = Paths.get(tempFolder.toString(), appArchiveName + "." + fileIdx);
+//            fileIdx++;
+//        }
         return appArchiveFolder;
     }
 
