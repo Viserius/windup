@@ -25,14 +25,7 @@ import org.jboss.windup.config.RuleProvider;
 import org.jboss.windup.config.furnace.FurnaceHolder;
 import org.jboss.windup.exec.WindupProcessor;
 import org.jboss.windup.exec.WindupProgressMonitor;
-import org.jboss.windup.exec.configuration.options.ExportCSVOption;
-import org.jboss.windup.exec.configuration.options.InputApplicationName;
-import org.jboss.windup.exec.configuration.options.InputPathOption;
-import org.jboss.windup.exec.configuration.options.OnlineModeOption;
-import org.jboss.windup.exec.configuration.options.OutputPathOption;
-import org.jboss.windup.exec.configuration.options.UserIgnorePathOption;
-import org.jboss.windup.exec.configuration.options.UserRulesDirectoryOption;
-import org.jboss.windup.exec.configuration.options.UserLabelsDirectoryOption;
+import org.jboss.windup.exec.configuration.options.*;
 import org.jboss.windup.graph.GraphContext;
 import org.jboss.windup.util.PathUtil;
 import org.ocpsoft.rewrite.config.Rule;
@@ -298,6 +291,21 @@ public class WindupConfiguration
     public WindupConfiguration setOutputDirectory(Path outputDirectory)
     {
         setOptionValue(OutputPathOption.NAME, outputDirectory.toFile());
+        return this;
+    }
+
+    public Path getArchiveDirectory()
+    {
+        File file = getOptionValue(ArchivePathOption.NAME);
+        return file == null ? null : file.toPath();
+    }
+
+    /**
+     * Contains the directory to put the output to (migration report, temporary files, exported graph data...).
+     */
+    public WindupConfiguration setArchiveDirectory(Path outputDirectory)
+    {
+        setOptionValue(ArchivePathOption.NAME, outputDirectory.toFile());
         return this;
     }
 

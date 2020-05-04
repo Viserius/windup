@@ -57,6 +57,7 @@ public class UnzipArchiveToOutputFolder extends AbstractIterationOperation<Archi
     @Override
     public void perform(GraphRewrite event, EvaluationContext context, ArchiveModel payload)
     {
+        LOG.info("Checking if archive needs to be unzipped: " + payload.toPrettyString());
         if (new WindupJavaConfigurationService(event.getGraphContext()).checkIfIgnored(event, payload))
             return;
 
@@ -93,7 +94,9 @@ public class UnzipArchiveToOutputFolder extends AbstractIterationOperation<Archi
     public static Path getArchivesDirLocation(final GraphContext graphContext)
     {
         WindupConfigurationModel cfg = WindupConfigurationService.getConfigurationModel(graphContext);
-        String windupOutputFolder = cfg.getOutputPath().getFilePath();
+        // bugged String windupOutputFolder = cfg.getArchivePath().getFilePath();
+        String windupOutputFolder = cfg.getArchivePath().getFilePath();
+        // bugged return Paths.get(windupOutputFolder);
         return Paths.get(windupOutputFolder, ARCHIVES);
     }
 
@@ -113,11 +116,14 @@ public class UnzipArchiveToOutputFolder extends AbstractIterationOperation<Archi
 
         final Path appArchiveFolder = getNonexistentDirForAppArchive(tempFolder, appArchiveName);
 
+        LOG.info("Unzipping to " + appArchiveFolder.toString());
+
         /**
          * Mark Soelman
          * Do not unzip the same file multiple times!
          */
         if(Files.exists(appArchiveFolder)) {
+            LOG.info("Already unzipped, skipping!");
             archiveModel.setUnzippedDirectory(appArchiveFolder.toString());
             recurseAndAddFiles(event, context, tempFolder, fileService, archiveModel, archiveModel, subArchivesOnly);
             return;
@@ -126,10 +132,11 @@ public class UnzipArchiveToOutputFolder extends AbstractIterationOperation<Archi
         ensureDirIsCreated(appArchiveFolder);
 
         // Unzip to the temp folder.
-        LOG.info("Unzipping " + inputZipFile.getPath() + " to " + appArchiveFolder.toString());
+        System.out.println("Unzipping " + inputZipFile.getPath() + " to " + appArchiveFolder.toString());
         try {
             ZipUtil.unzipToFolder(inputZipFile, appArchiveFolder.toFile());
         } catch (Throwable e) {
+            System.out.println("Something went wrong during unzipping: " + e.getMessage());
             // only mark the canonical archive, as we only need to add this classification once
             ArchiveModel canonicalArchive = archiveModel;
             if (canonicalArchive instanceof DuplicateArchiveModel)

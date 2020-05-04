@@ -22,6 +22,7 @@ public interface WindupConfigurationModel extends WindupVertexFrame
     String USER_IGNORE_PATH = "userIgnorePath";
     String ONLINE_MODE = "fetchRemoteResources";
     String OUTPUT_PATH = "outputPath";
+    String ARCHIVES_PATH = "archivePath";
     String SOURCE_TECHNOLOGY = "sourceTechnology";
     String TARGET_TECHNOLOGY = "targetTechnology";
     String CSV_MODE = "csv";
@@ -93,6 +94,18 @@ public interface WindupConfigurationModel extends WindupVertexFrame
      */
     @Adjacency(label = OUTPUT_PATH, direction = Direction.OUT)
     void setOutputPath(FileModel outputPath);
+
+    /**
+     * Where to put the report and other files produced during Windup execution.
+     */
+    @Adjacency(label = ARCHIVES_PATH, direction = Direction.OUT)
+    FileModel getArchivePath();
+
+    /**
+     * Where to put the report and other files produced during Windup execution.
+     */
+    @Adjacency(label = ARCHIVES_PATH, direction = Direction.OUT)
+    void setArchivesPath(FileModel archivesPath);
 
     /**
      * Indicates whether or not to function in online mode (network access allowed)

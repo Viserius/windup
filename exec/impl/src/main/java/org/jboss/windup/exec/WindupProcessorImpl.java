@@ -148,6 +148,7 @@ public class WindupProcessorImpl implements WindupProcessor
             }
 
             configurationModel.setOutputPath(getFileModel(context, configuration.getOutputDirectory()));
+            configurationModel.setArchivesPath(getFileModel(context, configuration.getArchiveDirectory()));
             configurationModel.setOnlineMode(configuration.isOnline());
             configurationModel.setExportingCSV(configuration.isExportingCSV());
             configurationModel.setKeepWorkDirectories(configuration.getOptionValue(KeepWorkDirsOption.NAME));
@@ -421,6 +422,7 @@ public class WindupProcessorImpl implements WindupProcessor
             LOG.info("");
         }
         LOG.info("Output Path:" + windupConfiguration.getOutputDirectory());
+        LOG.info("Archives Path:" + windupConfiguration.getArchiveDirectory());
         LOG.info("");
 
         for (Map.Entry<String, Object> entrySet : windupConfiguration.getOptionMap().entrySet())

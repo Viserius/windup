@@ -298,6 +298,7 @@ public class RunWindupCommand implements Command, FurnaceDependent
             System.out.println();
         }
         System.out.println("Output Path:" + windupConfiguration.getOutputDirectory());
+        System.out.println("Archives Path:" + windupConfiguration.getArchiveDirectory());
         System.out.println();
 
         normalizePackagePrefixes(windupConfiguration);

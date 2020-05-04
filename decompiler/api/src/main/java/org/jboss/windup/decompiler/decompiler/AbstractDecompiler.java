@@ -10,6 +10,7 @@ import org.jboss.windup.util.Checks;
 import org.jboss.windup.util.threading.WindupExecutors;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,6 +23,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import org.jboss.windup.util.exception.WindupStopException;
 
@@ -91,6 +93,13 @@ public abstract class AbstractDecompiler implements Decompiler
 
     @Override public void decompileClassFiles(Collection<ClassDecompileRequest> requests, DecompilationListener listener)
     {
+        /**
+         * Mark Soelman
+         * Filter out all classes that have already been decompiled
+         */
+        requests = requests.stream().filter(x ->
+                !(new File(x.getClassFile().toString().replace(".class", ".java"))).exists()
+        ).collect(Collectors.toList());
         Map<String, List<ClassDecompileRequest>> requestMap = groupDecompileRequests(requests);
         Collection<Callable<File>> tasks = getDecompileTasks(requestMap,listener);
         try

@@ -30,7 +30,8 @@ public class DecompilerUtil
         File inputPath = fileModel.getProjectModel().getRootProjectModel().getRootFileModel().asFile();
         if (PathUtil.isInSubDirectory(inputPath, fileModel.asFile()))
         {
-            String outputPath = configuration.getOutputPath().getFilePath();
+            // old String outputPath = configuration.getOutputPath().getFilePath();
+            String outputPath = configuration.getArchivePath().getFilePath();
             result = Paths.get(outputPath).resolve("classes").toFile();
         }
         else

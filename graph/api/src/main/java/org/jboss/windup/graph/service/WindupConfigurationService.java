@@ -13,18 +13,21 @@ import java.nio.file.Paths;
  */
 public class WindupConfigurationService extends GraphService<WindupConfigurationModel>
 {
-    private static final String ARCHIVES = "archives";
-
     public WindupConfigurationService(GraphContext context)
     {
         super(context, WindupConfigurationModel.class);
     }
 
+    /**
+     * Mark Soelman
+     * Add archive path so they can be shared between multiple reports
+     */
     public static Path getArchivesPath(final GraphContext graphContext)
     {
         WindupConfigurationModel cfg = WindupConfigurationService.getConfigurationModel(graphContext);
-        String windupOutputFolder = cfg.getOutputPath().getFilePath();
-        return Paths.get(windupOutputFolder, ARCHIVES);
+        String archiveOutputFolder = cfg.getArchivePath().getFilePath();
+        // old String archiveOutputFolder = cfg.getOutputPath().getFilePath();
+        return Paths.get(archiveOutputFolder);
     }
 
     /**
