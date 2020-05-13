@@ -237,6 +237,16 @@ public class ProcyonDecompiler extends AbstractDecompiler
         final String typeName = StringUtils.removeEnd(name, ".class");// .replace('/', '.');
 
         DecompilationResult result = new DecompilationResult();
+        /*
+         * Mark Soelman
+         * Do not decompile a class file twice, if it has already been decompiled
+         */
+        File newOutputFile = new File(classFilePath.toString().replace(".class", ".java"));
+        if(newOutputFile.exists()) {
+            result.addDecompiled(Collections.singletonList(classFilePath.toString()), newOutputFile.toString());
+            return result;
+        }
+
         try
         {
             DecompilerSettings settings = getDefaultSettings(outputDir.toFile());

@@ -97,9 +97,10 @@ public abstract class AbstractDecompiler implements Decompiler
          * Mark Soelman
          * Filter out all classes that have already been decompiled
          */
-        requests = requests.stream().filter(x ->
-                !(new File(x.getClassFile().toString().replace(".class", ".java"))).exists()
-        ).collect(Collectors.toList());
+//        requests = requests.stream().filter(x ->
+//                !(new File(x.getClassFile().toString().replace(".class", ".java"))).exists()
+//        ).collect(Collectors.toList());
+
         Map<String, List<ClassDecompileRequest>> requestMap = groupDecompileRequests(requests);
         Collection<Callable<File>> tasks = getDecompileTasks(requestMap,listener);
         try

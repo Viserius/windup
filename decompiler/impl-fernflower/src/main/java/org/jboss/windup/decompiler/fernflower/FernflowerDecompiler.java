@@ -134,6 +134,17 @@ public class FernflowerDecompiler extends AbstractDecompiler
     public DecompilationResult decompileClassFile(Path rootDir, Path classFilePath, Path outputDir) throws DecompilationException
     {
         final DecompilationResult result = new DecompilationResult();
+
+        /**
+         * Mark Soelman
+         * Do not decompile a class file twice, if it has already been decompiled
+         */
+        File outputFile = new File(classFilePath.toString().replace(".class", ".java"));
+        if(outputFile.exists()) {
+            result.addDecompiled(Collections.singletonList(classFilePath.toString()), outputFile.toString());
+            return result;
+        }
+
         DecompilationListener listener = new DecompilationListener()
         {
             private boolean cancelled;
