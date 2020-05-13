@@ -304,11 +304,11 @@ public class ExportCSVFileRuleProvider extends AbstractRuleProvider
              * Mark Soelman
              * Always add the parent application, not just with AllIssues
              */
-//            if (isLineForAppTagFile)
-//            {
-//                projectToFile.get(APP_FILE_TECH_CSV_FILENAME).writeNext(line);
-//            }
-//            else
+            if (isLineForAppTagFile)
+            {
+                projectToFile.get(APP_FILE_TECH_CSV_FILENAME).writeNext(line);
+            }
+            else
             {
                 projectToFile.get(projectModel.getName()).writeNext(line);
                 //Convert line array to ArrayList, add extra field for merged file on the end,
