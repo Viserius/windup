@@ -1,0 +1,242 @@
+<?xml version="1.0"?>
+<ruleset id="jeematcher"
+    xmlns="http://windup.jboss.org/schema/jboss-ruleset"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://windup.jboss.org/schema/jboss-ruleset http://windup.jboss.org/schema/jboss-ruleset/windup-jboss-ruleset.xsd">
+    <metadata>
+        <description>
+            This ruleset is used to analyze existing applications for Java EE components. For this analysis, minimal effort is used to migrate to Spring without the normal Java EE libraries.
+        </description>
+        <dependencies>
+          <addon id="org.jboss.windup.rules,windup-rules-javaee,3.0.0.Final"/>
+          <addon id="org.jboss.windup.rules,windup-rules-java,3.0.0.Final"/>
+        </dependencies>
+        <sourceTechnology id="duo"/>
+        <targetTechnology id="duo"/>
+        <tag>jeematcher</tag>
+    </metadata>
+    <rules>
+        <!-- Below are all Java EE 6 classes according to the JavaDoc. References:
+              https://docs.oracle.com/javaee/6/api/
+        -->
+        <rule id="jeematcher-annotation">
+            <when>
+                <javaclass references="javax.annotation.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.annotation (Common Annotations)" category-id="duo" effort="0" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-decorator">
+            <when>
+                <javaclass references="javax.decorator.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.decorator (Decorator Annotations)" category-id="duo" effort="50" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-ejb-universal">
+            <when>
+                <javaclass references="javax.ejb.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.ejb (Enterprise Java Beans)" category-id="duo" effort="10" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-ejb-stateful">
+            <when>
+                <javaclass references="javax.ejb.Stateful"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.ejb (Enterprise Java Beans)" category-id="duo" effort="10" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-el">
+            <when>
+                <javaclass references="javax.el.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.el (Unified Expression Language)" category-id="duo" effort="10" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-enterprise-universal">
+            <when>
+                <javaclass references="javax.enterprise.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.enterprise (Contexts and Dependency Injection)" category-id="duo" effort="10" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-enterprise-stateful">
+            <when>
+                <javaclass references="javax.enterprise.context.ApplicationScoped"><location>IMPORT</location></javaclass>
+                <javaclass references="javax.enterprise.context.SessionScoped"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.enterprise (Contexts and Dependency Injection)" category-id="duo" effort="10" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-faces">
+            <when>
+                <javaclass references="javax.faces.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.faces (JavaServer Faces)" category-id="duo" effort="50" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-inject-universal">
+            <when>
+                <javaclass references="javax.inject.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.inject (Dependency Injection)" category-id="duo" effort="10" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-inject-stateful">
+            <when>
+                <javaclass references="javax.inject.Singleton"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.inject (Dependency Injection)" category-id="duo" effort="10" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-interceptor">
+            <when>
+                <javaclass references="javax.interceptor.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.interceptor (Interceptor)" category-id="duo" effort="50" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-jms">
+            <when>
+                <javaclass references="javax.jms.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.jms (Java Message Service)" category-id="duo" effort="0" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-jws">
+            <when>
+                <javaclass references="javax.jws.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.jws (Web Services Metadata)" category-id="duo" effort="30" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-mail">
+            <when>
+                <javaclass references="javax.mail.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.mail (JavaMail)" category-id="duo" effort="0" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-management-je2ee">
+            <when>
+                <javaclass references="javax.management.j2ee.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.management.j2ee (Management Enterprise Java Beans)" category-id="duo" effort="100" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-jpa">
+            <when>
+                <javaclass references="javax.jpa.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.jpa (Java Persistence API)" category-id="duo" effort="20" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-resource">
+            <when>
+                <javaclass references="javax.resource.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.resource (Java EE Connector API)" category-id="duo" effort="100" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-security">
+            <when>
+                <javaclass references="javax.security.auth.message.{*}"><location>IMPORT</location></javaclass>
+                <javaclass references="javax.security.jacc.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.security (Java Authentication and Authorization Service)" category-id="duo" effort="100" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-servlet">
+            <when>
+                <javaclass references="javax.servlet.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.servlet (Servlet)" category-id="duo" effort="10" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-transaction">
+            <when>
+                <javaclass references="javax.transaction.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.transaction (Java Transaction API)" category-id="duo" effort="0" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-validation">
+            <when>
+                <javaclass references="javax.validation.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.validation (Java Bean Validation)" category-id="duo" effort="0" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-ws-rs">
+            <when>
+                <javaclass references="javax.ws.rs.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.ws.rs (Java API for RESTful Web Services)" category-id="duo" effort="10" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-xml-bind">
+            <when>
+                <javaclass references="javax.xml.bind.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.xml.bind (Java Architecture for XML Binding)" category-id="duo" effort="0" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-xml-registry">
+            <when>
+                <javaclass references="javax.xml.registry.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.xml.registry (Java API for XML Registries)" category-id="duo" effort="0" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-xml-rpc">
+            <when>
+                <javaclass references="javax.xml.rpc.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.xml.rpc (Java API for XML-based RPC)" category-id="duo" effort="0" />
+            </perform>
+        </rule>
+        <rule id="jeematcher-xml-ws">
+            <when>
+                <javaclass references="javax.xml.ws.{*}"><location>IMPORT</location></javaclass>
+            </when>
+            <perform>
+                <classification title="javax.xml.ws (Java API for XML Web Services)" category-id="duo" effort="0" />
+            </perform>
+        </rule>
+        <rule id="classifier-always-match">
+            <!-- When none of the frameworks match, it would still be good to know this application exists for this test run -->
+            <when>
+                <file filename="deployit-manifest.xml"/>
+            </when>
+            <perform>
+                <classification title="PLACEHOLDER" category-id="information" effort="0" />
+            </perform>
+        </rule>
+    </rules>
+</ruleset>

@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<ruleset id="classifier"
+    xmlns="http://windup.jboss.org/schema/jboss-ruleset"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://windup.jboss.org/schema/jboss-ruleset http://windup.jboss.org/schema/jboss-ruleset/windup-jboss-ruleset.xsd">
+    <metadata>
+        <description>
+            This ruleset is used to classify the framework that applications use.
+        </description>
+        <dependencies>
+          <addon id="org.jboss.windup.rules,windup-rules-javaee,3.0.0.Final"/>
+          <addon id="org.jboss.windup.rules,windup-rules-java,3.0.0.Final"/>
+        </dependencies>
+        <sourceTechnology id="duo" />
+        <targetTechnology id="duo" />
+        <tag>classifier</tag>
+    </metadata>
+    <rules>
+        <rule id="classifier-spring-boot-one">
+            <when>
+                <or>
+                    <!-- Contains Spring Boot 1 artifacts -->
+                    <file filename="spring-boot-1.{*}.jar"/>
+                    <dependency groupId="org.springframework.boot" artifactId="{*}" toVersion="1.5.22" />
+                    <dependency groupId="org.springframework.boot" artifactId="{*}" toVersion="1.5.22.RELEASE" />
+                    <project>
+                        <artifact groupId="org.springframework.boot" artifactId="{*}" toVersion="1.5.22.RELEASE"/>
+                    </project>
+                    <project>
+                        <artifact groupId="org.springframework.boot" artifactId="{*}" toVersion="1.5.22"/>
+                    </project>
+                </or>
+            </when>
+            <perform>
+                <classification title="Spring Boot 1" category-id="duo" effort="1">
+                    <description>
+                        This application uses dependencies from Spring Boot 1.
+                    </description>
+                    <tag>Spring Boot 1</tag>
+                </classification>
+            </perform>
+        </rule>
+        <rule id="classifier-spring-boot-two">
+            <when>
+                <or>
+                    <!-- Contains Spring Boot 2 artifacts -->
+                    <file filename="spring-boot-2.{*}.jar"/>
+                    <dependency groupId="org.springframework.boot" artifactId="{*}" fromVersion="2.0.0" />
+                    <dependency groupId="org.springframework.boot" artifactId="{*}" fromVersion="2.0.0.RELEASE" />
+                    <project>
+                        <artifact groupId="org.springframework.boot" artifactId="{*}" fromVersion="2.0.0.RELEASE"/>
+                    </project>
+                    <project>
+                        <artifact groupId="org.springframework.boot" artifactId="{*}" fromVersion="2.0.0"/>
+                    </project>
+                </or>            
+            </when>
+            <perform>
+                <classification title="Spring Boot 2" category-id="duo" effort="0">
+                    <description>
+                        This application uses dependencies from Spring Boot 2.
+                    </description>
+                    <tag>Spring Boot 2</tag>
+                </classification>
+            </perform>
+        </rule>
+        <rule id="classifier-javaee">
+            <when>
+                <or>
+                    <!-- Contains Java EE artifacts -->
+                    <javaclass references="javax.annotation.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.decorator.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.ejb.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.el.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.enterprise.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.faces.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.inject.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.interceptor.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.jms.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.jws.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.mail.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.management.j2ee.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.persistence.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.resource.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.security.auth.message.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.security.jacc.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.servlet.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.transaction.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.validation.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.ws.rs.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.xml.bind.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.xml.registry.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.xml.rpc.{*}"><location>IMPORT</location></javaclass>
+                    <javaclass references="javax.xml.ws.{*}"><location>IMPORT</location></javaclass>
+                </or>
+            </when>
+            <perform>
+                <classification title="Java EE" category-id="duo" effort="0">
+                    <description>
+                        This application only uses dependencies from Java EE.
+                    </description>
+                    <tag>Java EE</tag>
+                </classification>
+            </perform>
+        </rule>
+        <rule id="classifier-always-match">
+            <!-- When none of the frameworks match, it would still be good to know this application exists for this test run -->
+            <when>
+                <file filename="deployit-manifest.xml"/>
+            </when>
+            <perform>
+                <classification title="PLACEHOLDER" category-id="information" effort="0" />
+            </perform>
+        </rule>
+    </rules>
+</ruleset>
