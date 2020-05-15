@@ -2,6 +2,8 @@
 * Originally, the exact same jar (up to the identical version) is extracted every time it is included as a dependency. For instance, my-jar-1-0.jar would be extracted 3 times to my-jar-1-0.jar, my-jar-1-0.jar.1, my-jar-1-0.jar.2. For analyzing a large amount of applications, we only need a single extracted version for optimalization purposes. This has been added in this fork.
 * Originally, even if -keepWorkDirs would be specified to keep extracted archives on disk, on consecutive runs it would simply extract these archives again and overwrite them. In this fork, if an archive has already been extracted, it will not extract it again, and use the extracted folder for optimalization purposes.
 * Originally, individual .class files would be decompiled again and again, even if they have already been decompiled. This fork optimizes this, such that it does not decompile the same .class file multiple times (this is different from extracting archives!).
+* Lazy report generation, if a report has already been generated, do not generate the same report again.
+* Retry until succeed: If windup fails for some reason and crashes, it will retry until it succeeds or an administrator solves the issue.
 * Added bash script for batch processing due to RAM constraints for high amount of applications. After generating individual reports, the CSVs are merged.
 
 = Original Readme
