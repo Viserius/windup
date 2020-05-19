@@ -48,7 +48,7 @@
                 <javaclass references="javax.ejb.Stateful"><location>IMPORT</location></javaclass>
             </when>
             <perform>
-                <classification title="javax.ejb (Enterprise Java Beans)" category-id="duo" effort="10" />
+                <classification title="javax.ejb (Enterprise Java Beans)*" category-id="duo" effort="10" />
             </perform>
         </rule>
         <rule id="jeematcher-el">
@@ -73,7 +73,7 @@
                 <javaclass references="javax.enterprise.context.SessionScoped"><location>IMPORT</location></javaclass>
             </when>
             <perform>
-                <classification title="javax.enterprise (Contexts and Dependency Injection)" category-id="duo" effort="10" />
+                <classification title="javax.enterprise (Contexts and Dependency Injection)*" category-id="duo" effort="10" />
             </perform>
         </rule>
         <rule id="jeematcher-faces">
@@ -97,7 +97,7 @@
                 <javaclass references="javax.inject.Singleton"><location>IMPORT</location></javaclass>
             </when>
             <perform>
-                <classification title="javax.inject (Dependency Injection)" category-id="duo" effort="10" />
+                <classification title="javax.inject (Dependency Injection)*" category-id="duo" effort="10" />
             </perform>
         </rule>
         <rule id="jeematcher-interceptor">
