@@ -1,4 +1,6 @@
 #!/bin/bash
+shopt -s extglob
+
 for i in `ls -1 ./artifacts/*.ear`; do
 
 	if [ ! -s "./reports-classifier/${i/.\/artifacts\//}/AllIssues.csv" ]; then
@@ -16,6 +18,9 @@ for i in `ls -1 ./artifacts/*.ear`; do
 	else
 		echo "Report already created, skipping: ${i/.\/artifacts\//}"
 	fi
+
+	find ./reports-classifier/${i/.\/artifacts\//}/ -mindepth 1 ! -name 'AllIssues.csv' -type d -exec rm -rv {} +
+	find ./reports-classifier/${i/.\/artifacts\//}/ -mindepth 1 ! -name 'AllIssues.csv' -type f -delete
 done
 
 sudo chmod -R 777 reports-classifier

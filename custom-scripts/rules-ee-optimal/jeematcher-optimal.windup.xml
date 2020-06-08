@@ -8,8 +8,8 @@
             This ruleset is used to analyze existing applications for Java EE components. For this analysis, every single Java EE usage will be removed in favour of Spring's methodology.
         </description>
         <dependencies>
-          <addon id="org.jboss.windup.rules,windup-rules-javaee,3.0.0.Final"/>
-          <addon id="org.jboss.windup.rules,windup-rules-java,3.0.0.Final"/>
+<!--           <addon id="org.jboss.windup.rules,windup-rules-javaee,3.0.0.Final"/>
+          <addon id="org.jboss.windup.rules,windup-rules-java,3.0.0.Final"/> -->
         </dependencies>
         <sourceTechnology id="duo"/>
         <targetTechnology id="duo"/>

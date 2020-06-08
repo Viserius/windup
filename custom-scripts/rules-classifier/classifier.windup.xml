@@ -8,18 +8,38 @@
             This ruleset is used to classify the framework that applications use.
         </description>
         <dependencies>
-          <addon id="org.jboss.windup.rules,windup-rules-javaee,3.0.0.Final"/>
-          <addon id="org.jboss.windup.rules,windup-rules-java,3.0.0.Final"/>
+<!--           <addon id="org.jboss.windup.rules,windup-rules-javaee,3.0.0.Final"/> -->
+<!--           <addon id="org.jboss.windup.rules,windup-rules-java,3.0.0.Final"/> -->
         </dependencies>
         <sourceTechnology id="duo" />
         <targetTechnology id="duo" />
         <tag>classifier</tag>
     </metadata>
     <rules>
-        <rule id="classifier-spring-boot-one">
+        <rule id="classifier-spring-boot">
             <when>
                 <or>
                     <!-- Contains Spring Boot 1 artifacts -->
+                    <file filename="spring-boot{*}.jar"/>
+                    <dependency groupId="org.springframework.boot" artifactId="{*}" />
+                    <project>
+                        <artifact groupId="org.springframework.boot" artifactId="{*}" />
+                    </project>
+                </or>
+            </when>
+            <perform>
+                <classification title="Spring Boot" category-id="duo" effort="1">
+                    <description>
+                        This application uses dependencies from Spring Boot.
+                    </description>
+                    <tag>Spring Boot</tag>
+                </classification>
+            </perform>
+        </rule>
+        <!-- <rule id="classifier-spring-boot-one">
+            <when>
+                <or>
+                    <! Contains Spring Boot 1 artifacts >
                     <file filename="spring-boot-1.{*}.jar"/>
                     <dependency groupId="org.springframework.boot" artifactId="{*}" toVersion="1.5.22" />
                     <dependency groupId="org.springframework.boot" artifactId="{*}" toVersion="1.5.22.RELEASE" />
@@ -43,7 +63,7 @@
         <rule id="classifier-spring-boot-two">
             <when>
                 <or>
-                    <!-- Contains Spring Boot 2 artifacts -->
+                    <! Contains Spring Boot 2 artifacts >
                     <file filename="spring-boot-2.{*}.jar"/>
                     <dependency groupId="org.springframework.boot" artifactId="{*}" fromVersion="2.0.0" />
                     <dependency groupId="org.springframework.boot" artifactId="{*}" fromVersion="2.0.0.RELEASE" />
@@ -63,7 +83,7 @@
                     <tag>Spring Boot 2</tag>
                 </classification>
             </perform>
-        </rule>
+        </rule> -->
         <rule id="classifier-javaee">
             <when>
                 <or>

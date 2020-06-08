@@ -1,4 +1,5 @@
 #!/bin/bash
+shopt -s extglob
 
 for i in `ls -1 ./artifacts/*.ear`; do
 
@@ -16,6 +17,9 @@ for i in `ls -1 ./artifacts/*.ear`; do
 	else
 		echo "Report already created, skipping: ${i/.\/artifacts\//}"
 	fi
+
+	find ./reports-ee-optimal/${i/.\/artifacts\//}/ -mindepth 1 ! -name 'AllIssues.csv' -type d -exec rm -rv {} +
+	find ./reports-ee-optimal/${i/.\/artifacts\//}/ -mindepth 1 ! -name 'AllIssues.csv' -type f -delete
 done
 
 sudo chmod -R 777 reports-ee-optimal
